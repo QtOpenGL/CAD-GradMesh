@@ -18,6 +18,8 @@ public:
 
 private slots:
 
+  void on_pushButton_released();
+  void on_ImportOBJ_clicked();                 // Load object
 
 private:
   Ui::MainWindow *ui;

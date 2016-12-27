@@ -10,11 +10,16 @@ class ControlNet
 {
 public:
     ControlNet();
-    QVector<QVector2D> *coords;
     Mesh *mesh;
+    QVector<unsigned int> *indices;
+    QVector<QVector2D> *coords;
+
+    unsigned int maxInt = ((unsigned int) -1);
 
     inline size_t size(){ return coords->size(); }
     inline QVector2D *data(){ return coords->data(); }
+    void showCoords();
+    void buildCoords();
 
 };
 

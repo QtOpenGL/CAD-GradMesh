@@ -19,7 +19,11 @@ public:
   MainView(QWidget *parent = 0);
   ~MainView();
 
+  unsigned int maxInt = ((unsigned int) -1);
   void updateBuffers();
+  ControlNet *controlNet;
+
+
 
 protected:
   void initializeGL();
@@ -31,13 +35,12 @@ protected:
 
 private:
 
-  ControlNet *controlNet;
   MouseHandler *mouseHandler;
 
   QOpenGLDebugLogger* debugLogger;
 
   QOpenGLShaderProgram* mainShaderProg;
-  GLuint netVAO, netCoordsBO;
+  GLuint netVAO, netCoordsBO, netIndexBO;
 
   void createShaderPrograms();
   void createBuffers();

@@ -8,15 +8,15 @@
 class MouseHandler
 {
 public:
-    MouseHandler(ControlNet *_controlNet);
-    int selectedPt = -1;
-    int height, width;
+  MouseHandler(ControlNet *_controlNet);
+  int selectedPt = -1;
+  int height, width;
 
-    ControlNet *controlNet;
+  ControlNet *controlNet;
 
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    short int findClosest(float x, float y);
+  void mousePressEvent(QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+  short int findClosest(float x, float y);
 
 };
 

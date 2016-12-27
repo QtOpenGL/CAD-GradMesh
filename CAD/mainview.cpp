@@ -42,15 +42,21 @@ void MainView::createBuffers() {
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+    glGenBuffers(1, &netIndexBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, netIndexBO);
+
     glBindVertexArray(0);
 }
 
 void MainView::updateBuffers() {
 
-    glBindBuffer(GL_ARRAY_BUFFER, netCoordsBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D)*controlNet->size(), controlNet->data(), GL_STATIC_DRAW);
+  glBindBuffer(GL_ARRAY_BUFFER, netCoordsBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(QVector2D)*controlNet->size(), controlNet->data(), GL_DYNAMIC_DRAW);
 
-    update();
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, netIndexBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int)*controlNet->indices->size(), controlNet->indices->data(), GL_DYNAMIC_DRAW);
+
+  update();
 }
 
 void MainView::initializeGL() {
@@ -67,17 +73,15 @@ void MainView::initializeGL() {
         debugLogger->enableMessages();
     }
 
-
     QString glVersion;
     glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
     qDebug() << ":: Using OpenGL" << qPrintable(glVersion);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    glEnable(GL_PRIMITIVE_RESTART);
+    glPrimitiveRestartIndex(maxInt);
 
     createShaderPrograms();
     createBuffers();
-
 }
 
 void MainView::paintGL() {
@@ -89,9 +93,10 @@ void MainView::paintGL() {
     mainShaderProg->bind();
 
     glBindVertexArray(netVAO);
+    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
 
     // Draw control net
-    glDrawArrays(GL_LINE_LOOP, 0, controlNet->size());
+    glDrawElements(GL_LINE_LOOP, controlNet->indices->size(), GL_UNSIGNED_INT, 0);
     glPointSize(8.0);
     glDrawArrays(GL_POINTS, 0, controlNet->size());
 

@@ -17,6 +17,7 @@
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include "mainview.h"
 
@@ -28,6 +29,8 @@ public:
     QWidget *centralWidget;
     QHBoxLayout *horizontalLayout;
     QGroupBox *mainGB;
+    QPushButton *pushButton;
+    QPushButton *ImportOBJ;
     MainView *mainView;
 
     void setupUi(QMainWindow *MainWindow)
@@ -64,6 +67,12 @@ public:
         mainGB->setStyleSheet(QLatin1String("QGroupBox {\n"
 "    margin-top: 0px;\n"
 "}"));
+        pushButton = new QPushButton(mainGB);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(10, 60, 85, 27));
+        ImportOBJ = new QPushButton(mainGB);
+        ImportOBJ->setObjectName(QStringLiteral("ImportOBJ"));
+        ImportOBJ->setGeometry(QRect(10, 20, 85, 27));
 
         horizontalLayout->addWidget(mainGB);
 
@@ -83,6 +92,8 @@ public:
     {
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
         mainGB->setTitle(QString());
+        pushButton->setText(QApplication::translate("MainWindow", "Show coords", 0));
+        ImportOBJ->setText(QApplication::translate("MainWindow", "Open File", 0));
     } // retranslateUi
 
 };

@@ -65,6 +65,32 @@ QGroupBox::title {
       <property name="title">
        <string/>
       </property>
+      <widget class="QPushButton" name="pushButton">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>60</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Show coords</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="ImportOBJ">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>85</width>
+         <height>27</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Open File</string>
+       </property>
+      </widget>
      </widget>
     </item>
     <item>
