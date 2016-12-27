@@ -21,9 +21,9 @@ public:
   QVector<Face> Faces;
   QVector<HalfEdge> HalfEdges;
 
-  void setTwins(unsigned int numHalfEdges, unsigned int indexH);
+  void setTwins(size_t numHalfEdges, size_t indexH);
 
-  QVector<QVector<unsigned int> > PotentialTwins;
+  QVector<QVector<size_t> > PotentialTwins;
 
   // For debugging
   void dispVertInfo(unsigned short vertIndex);

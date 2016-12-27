@@ -4,9 +4,7 @@ ControlNet::ControlNet()
   : mesh(nullptr)
   , indices(new QVector<unsigned int>)
   , coords(new QVector<QVector2D>)
-{
-
-}
+{}
 
 void ControlNet::showCoords()
 {

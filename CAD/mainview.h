@@ -44,7 +44,7 @@ private:
 
   void createShaderPrograms();
   void createBuffers();
-
+  void resizeGL(int newWidth, int newHeight);
 private slots:
   void onMessageLogged( QOpenGLDebugMessage Message );
 

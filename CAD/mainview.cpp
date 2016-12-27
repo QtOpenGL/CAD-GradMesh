@@ -7,6 +7,9 @@ MainView::MainView(QWidget *parent)
     , mouseHandler( new MouseHandler(controlNet) )
 {
     qDebug() << "✓✓ MainView constructor";
+    mouseHandler->width = width();
+    mouseHandler->height = height();
+
 }
 
 MainView::~MainView() {
@@ -20,8 +23,6 @@ MainView::~MainView() {
     debugLogger->stopLogging();
 }
 
-// ---
-
 void MainView::createShaderPrograms() {
 
     mainShaderProg = new QOpenGLShaderProgram();
@@ -33,7 +34,6 @@ void MainView::createShaderPrograms() {
 
 void MainView::createBuffers() {
 
-    // Pure OpenGL
     glGenVertexArrays(1, &netVAO);
     glBindVertexArray(netVAO);
 
@@ -59,73 +59,78 @@ void MainView::updateBuffers() {
   update();
 }
 
+void MainView::resizeGL(int newWidth, int newHeight) {
+
+  Q_UNUSED(newWidth);
+  Q_UNUSED(newHeight);
+
+  qDebug() << ".. resizeGL";
+
+  mouseHandler->width = width();
+  mouseHandler->height = height();
+}
+
 void MainView::initializeGL() {
 
-    initializeOpenGLFunctions();
-    qDebug() << ":: OpenGL initialized";
+  initializeOpenGLFunctions();
+  qDebug() << ":: OpenGL initialized";
 
-    debugLogger = new QOpenGLDebugLogger();
-    connect( debugLogger, SIGNAL( messageLogged( QOpenGLDebugMessage ) ), this, SLOT( onMessageLogged( QOpenGLDebugMessage ) ), Qt::DirectConnection );
+  debugLogger = new QOpenGLDebugLogger();
+  connect( debugLogger, SIGNAL( messageLogged( QOpenGLDebugMessage ) ), this, SLOT( onMessageLogged( QOpenGLDebugMessage ) ), Qt::DirectConnection );
 
-    if ( debugLogger->initialize() ) {
-        qDebug() << ":: Logging initialized";
-        debugLogger->startLogging( QOpenGLDebugLogger::SynchronousLogging );
-        debugLogger->enableMessages();
-    }
+  if ( debugLogger->initialize() ) {
+    qDebug() << ":: Logging initialized";
+    debugLogger->startLogging( QOpenGLDebugLogger::SynchronousLogging );
+    debugLogger->enableMessages();
+  }
 
-    QString glVersion;
-    glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
-    qDebug() << ":: Using OpenGL" << qPrintable(glVersion);
+  QString glVersion;
+  glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
+  qDebug() << ":: Using OpenGL" << qPrintable(glVersion);
 
-    glEnable(GL_PRIMITIVE_RESTART);
-    glPrimitiveRestartIndex(maxInt);
+  glEnable(GL_PRIMITIVE_RESTART);
+  glPrimitiveRestartIndex(maxInt);
 
-    createShaderPrograms();
-    createBuffers();
+  createShaderPrograms();
+  createBuffers();
 }
 
 void MainView::paintGL() {
-    updateBuffers();
+  updateBuffers();
 
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(1.0, 1.0, 1.0, 1.0);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mainShaderProg->bind();
+  mainShaderProg->bind();
 
-    glBindVertexArray(netVAO);
-    glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+  glBindVertexArray(netVAO);
 
-    // Draw control net
-    glDrawElements(GL_LINE_LOOP, controlNet->indices->size(), GL_UNSIGNED_INT, 0);
-    glPointSize(8.0);
-    glDrawArrays(GL_POINTS, 0, controlNet->size());
+  // Draw control net
+  glDrawElements(GL_LINE_LOOP, controlNet->indices->size(), GL_UNSIGNED_INT, 0);
+  glPointSize(8.0);
+  glDrawArrays(GL_POINTS, 0, controlNet->size());
 
-    // Highlight selected control point
-    if (mouseHandler->selectedPt > -1) {
-        glPointSize(12.0);
-        glDrawArrays(GL_POINTS, mouseHandler->selectedPt, 1);
-    }
+  // Highlight selected control point
+  if (mouseHandler->selectedPt > -1) {
+    glPointSize(12.0);
+    glDrawArrays(GL_POINTS, mouseHandler->selectedPt, 1);
+  }
 
-    glBindVertexArray(0);
+  glBindVertexArray(0);
 
-
-    mainShaderProg->release();
+  mainShaderProg->release();
 }
 
 void MainView::mousePressEvent(QMouseEvent *event) {
-    mouseHandler->width = width();
-    mouseHandler->height = height();
-    mouseHandler->mousePressEvent(event);
+  mouseHandler->mousePressEvent(event);
 }
 void MainView::mouseMoveEvent(QMouseEvent *event) {
-    mouseHandler->width = width();
-    mouseHandler->height = height();
-    mouseHandler->mouseMoveEvent(event);
+  mouseHandler->mouseMoveEvent(event);
 }
 void MainView::mouseReleaseEvent(QMouseEvent *event){
-    Q_UNUSED(event);
-    mouseHandler->selectedPt = -1;
+  Q_UNUSED(event);
+  mouseHandler->selectedPt = -1;
 }
 void MainView::onMessageLogged( QOpenGLDebugMessage Message ) {
-    qDebug() << " → Log:" << Message;
+  qDebug() << " → Log:" << Message;
 }

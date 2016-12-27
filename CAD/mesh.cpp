@@ -10,13 +10,13 @@ Mesh::Mesh(OBJFile* loadedOBJFile) {
   qDebug() << "✓✓ Mesh constructor (OBJ)";
 
   // Convert loaded OBJ file to HalfEdge mesh
-  unsigned int numVertices, numHalfEdges, numFaces;
-  unsigned int k, m, n;
+  size_t numVertices, numHalfEdges, numFaces;
+  size_t k, m, n;
 
   numVertices = loadedOBJFile->vertexCoords.size();
   numHalfEdges = 0;
 
-  for (k=0; k<(unsigned int)loadedOBJFile->faceValences.size(); k++) {
+  for (k=0; k<(size_t)loadedOBJFile->faceValences.size(); k++) {
     numHalfEdges += loadedOBJFile->faceValences[k];
   }
 
@@ -41,8 +41,8 @@ Mesh::Mesh(OBJFile* loadedOBJFile) {
 
   qDebug() << "   # Vertices" << Vertices.capacity() << Vertices.size();
 
-  unsigned int indexH = 0;
-  unsigned int currentIndex = 0;
+  size_t indexH = 0;
+  size_t currentIndex = 0;
 
   // Initialize every entry of PotentialTwins with an empty QVector (using resize() )
   PotentialTwins.resize(loadedOBJFile->vertexCoords.size());
@@ -91,7 +91,7 @@ Mesh::Mesh(OBJFile* loadedOBJFile) {
   qDebug() << "   # HalfEdges" << HalfEdges.capacity() << HalfEdges.size();
 
   // Outs and Valences of vertices
-  for (k=0; k<(unsigned int)Vertices.size(); k++) {
+  for (k=0; k<(size_t)Vertices.size(); k++) {
     if (PotentialTwins[k].size() == 0) {
       qWarning() << " ! Isolated Vertex? PotentialTwins empty for Index" << k;
       dispVertInfo(k);
@@ -126,11 +126,11 @@ Mesh::~Mesh() {
   Faces.squeeze();
 }
 
-void Mesh::setTwins(unsigned int numHalfEdges, unsigned int indexH) {
+void Mesh::setTwins(size_t numHalfEdges, size_t indexH) {
 
-  unsigned int m, n;
-  unsigned int hTail, hHead, len;
-  QSet<unsigned int> Twinless;
+  size_t m, n;
+  size_t hTail, hHead, len;
+  QSet<size_t> Twinless;
 
   // Assign Twins
   for (m=0; m<numHalfEdges; m++) {
@@ -154,17 +154,10 @@ void Mesh::setTwins(unsigned int numHalfEdges, unsigned int indexH) {
   }
 
   if (Twinless.size() > 0) {
-    qDebug() << " * There are" << Twinless.size() << "HalfEdges without Twin (i.e. the model contains boundaries)";
-  }
-
-  if (Twinless.size() > 0) {
-    // The mesh is not closed
-
-    //qDebug() << Twinless.values();
 
     HalfEdge* initialEdge;
     HalfEdge* currentEdge;
-    unsigned int startBoundaryLoop;
+    size_t startBoundaryLoop;
 
     while (Twinless.size() > 0) {
       // Select a HalfEdge without Twin. The Twin that we will create is part of a boundary edge loop
