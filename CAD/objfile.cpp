@@ -26,13 +26,10 @@ OBJFile::OBJFile(QString fileName) {
       currentLine = fileContents.readLine();
       values = currentLine.split(" ");
 
-      if (values[0] == "v") {
-        // qDebug() << "Vertex coords";
-        // Only x, y and z. If there's a w value (homogenous coordinates), ignore it.
+      if (values[0] == "v")
         vertexCoords.append(QVector2D(values[1].toFloat(), values[2].toFloat() ));
-      }
+
       else if (values[0] == "f") {
-        // qDebug() << "Face";
 
         for (k=1; k<values.size(); k++) {
           indices = values[k].split("/");

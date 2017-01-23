@@ -22,12 +22,15 @@ public:
   unsigned int maxInt = ((unsigned int) -1);
   void updateBuffers();
   ControlNet *controlNet;
+  void paintGL();
 
+  void ternarySubdiv(){
+    controlNet->ternarySubdiv();
+  }
 
-
+  bool showTernaryPoints;
 protected:
   void initializeGL();
-  void paintGL();
 
   void mousePressEvent(QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
@@ -36,15 +39,17 @@ protected:
 private:
 
   MouseHandler *mouseHandler;
-
   QOpenGLDebugLogger* debugLogger;
+  QOpenGLShaderProgram* mainShaderProg,* blackShaderProg;
 
-  QOpenGLShaderProgram* mainShaderProg;
-  GLuint netVAO, netCoordsBO, netIndexBO;
+  GLuint netVAO, netCoordsBO, netIndexBO, netColourBO;
+  GLuint terVAO, terCoordsBO, terColourBO;
+  GLuint graVAO, graCoordsBO, graIndexBO;
 
   void createShaderPrograms();
   void createBuffers();
   void resizeGL(int newWidth, int newHeight);
+
 private slots:
   void onMessageLogged( QOpenGLDebugMessage Message );
 

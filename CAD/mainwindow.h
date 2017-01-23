@@ -21,6 +21,10 @@ private slots:
   void on_pushButton_released();
   void on_ImportOBJ_clicked();                 // Load object
 
+  void on_ternaryStepPB_released();
+
+  void on_showTernaryCB_toggled(bool checked);
+
 private:
   Ui::MainWindow *ui;
 

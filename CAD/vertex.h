@@ -2,6 +2,7 @@
 #define VERTEX
 
 #include <QVector2D>
+#include <QVector3D>
 #include <QDebug>
 
 // Forward declaration
@@ -14,6 +15,7 @@ public:
   unsigned short val;
   unsigned int index;
   unsigned short sharpness;
+  QVector3D colour;
 
   // Inline constructors
   Vertex() {
@@ -23,15 +25,17 @@ public:
     val = 0;
     index = 0;
     sharpness = 0;
+    colour = QVector3D();
   }
 
-  Vertex(QVector2D &vcoords, HalfEdge* vout, unsigned short vval, unsigned int vindex, float vsharpness = 0) {
+  Vertex(QVector2D &vcoords, HalfEdge* vout, unsigned short vval, unsigned int vindex, float vsharpness = 0, QVector3D vcolour = QVector3D(1.0, 1.0, 0.0)) {
     //qDebug() << "QVector3D Vertex Constructor";
     coords = vcoords;
     out = vout;
     val = vval;
     index = vindex;
     sharpness = vsharpness;
+    colour = vcolour;
   }
 };
 

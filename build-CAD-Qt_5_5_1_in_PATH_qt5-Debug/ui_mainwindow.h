@@ -13,6 +13,7 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -31,6 +32,8 @@ public:
     QGroupBox *mainGB;
     QPushButton *pushButton;
     QPushButton *ImportOBJ;
+    QPushButton *ternaryStepPB;
+    QCheckBox *showTernaryCB;
     MainView *mainView;
 
     void setupUi(QMainWindow *MainWindow)
@@ -73,6 +76,12 @@ public:
         ImportOBJ = new QPushButton(mainGB);
         ImportOBJ->setObjectName(QStringLiteral("ImportOBJ"));
         ImportOBJ->setGeometry(QRect(10, 20, 85, 27));
+        ternaryStepPB = new QPushButton(mainGB);
+        ternaryStepPB->setObjectName(QStringLiteral("ternaryStepPB"));
+        ternaryStepPB->setGeometry(QRect(10, 105, 85, 27));
+        showTernaryCB = new QCheckBox(mainGB);
+        showTernaryCB->setObjectName(QStringLiteral("showTernaryCB"));
+        showTernaryCB->setGeometry(QRect(40, 215, 141, 22));
 
         horizontalLayout->addWidget(mainGB);
 
@@ -94,6 +103,8 @@ public:
         mainGB->setTitle(QString());
         pushButton->setText(QApplication::translate("MainWindow", "Show coords", 0));
         ImportOBJ->setText(QApplication::translate("MainWindow", "Open File", 0));
+        ternaryStepPB->setText(QApplication::translate("MainWindow", "ternary", 0));
+        showTernaryCB->setText(QApplication::translate("MainWindow", "Ternary Points", 0));
     } // retranslateUi
 
 };

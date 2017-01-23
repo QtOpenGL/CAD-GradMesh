@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     controlnet.cpp \
     mousehandler.cpp \
     mesh.cpp \
-    objfile.cpp
+    objfile.cpp \
+    ternary.cpp
 
 HEADERS  += mainwindow.h \
     mainview.h \
@@ -27,7 +28,8 @@ HEADERS  += mainwindow.h \
     vertex.h \
     halfedge.h \
     mesh.h \
-    objfile.h
+    objfile.h \
+    ternary.h
 
 FORMS    += mainwindow.ui
 

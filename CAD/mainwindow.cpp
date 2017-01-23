@@ -26,3 +26,13 @@ void MainWindow::on_ImportOBJ_clicked() {
   ui->mainView->controlNet->buildCoords();
   ui->mainView->updateBuffers();
 }
+
+void MainWindow::on_ternaryStepPB_released()
+{
+    ui->mainView->ternarySubdiv();
+}
+
+void MainWindow::on_showTernaryCB_toggled(bool checked)
+{
+    ui->mainView->showTernaryPoints = checked;
+}

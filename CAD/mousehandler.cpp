@@ -1,7 +1,12 @@
 #include "mousehandler.h"
 
-MouseHandler::MouseHandler(ControlNet *_controlNet)
-  : controlNet(_controlNet)
+#include <mainview.h>
+#include <QColor>
+#include <QColorDialog>
+
+MouseHandler::MouseHandler(ControlNet *_controlNet, MainView *_mainview)
+  : controlNet(_controlNet),
+    mainview(_mainview)
 {
 }
 
@@ -19,6 +24,16 @@ void MouseHandler::mousePressEvent(QMouseEvent *event) {
   case Qt::LeftButton:
     // Select control point
     selectedPt = findClosest(xScene, yScene);
+    break;
+  case Qt::RightButton:
+    selectedPt = findClosest(xScene, yScene);
+    QColor c = QColorDialog::getColor(Qt::white, dynamic_cast<QWidget*>(mainview));
+    if (c.isValid()){
+      controlNet->mesh->Vertices[selectedPt].colour = QVector3D(c.redF(), c.greenF(), c.blueF());
+//      mainview->updateBuffers();
+//      mainview->paintGL();
+      controlNet->updateColours();
+    }
     break;
   }
 

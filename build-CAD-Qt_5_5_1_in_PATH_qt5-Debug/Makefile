@@ -54,7 +54,8 @@ SOURCES       = ../CAD/main.cpp \
 		../CAD/controlnet.cpp \
 		../CAD/mousehandler.cpp \
 		../CAD/mesh.cpp \
-		../CAD/objfile.cpp qrc_resources.cpp \
+		../CAD/objfile.cpp \
+		../CAD/ternary.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_mainview.cpp
 OBJECTS       = main.o \
@@ -64,6 +65,7 @@ OBJECTS       = main.o \
 		mousehandler.o \
 		mesh.o \
 		objfile.o \
+		ternary.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_mainview.o
@@ -132,13 +134,15 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		../CAD/vertex.h \
 		../CAD/halfedge.h \
 		../CAD/mesh.h \
-		../CAD/objfile.h ../CAD/main.cpp \
+		../CAD/objfile.h \
+		../CAD/ternary.h ../CAD/main.cpp \
 		../CAD/mainwindow.cpp \
 		../CAD/mainview.cpp \
 		../CAD/controlnet.cpp \
 		../CAD/mousehandler.cpp \
 		../CAD/mesh.cpp \
-		../CAD/objfile.cpp
+		../CAD/objfile.cpp \
+		../CAD/ternary.cpp
 QMAKE_TARGET  = SubdivCurves
 DESTDIR       = #avoid trailing-slash linebreak
 TARGET        = SubdivCurves
@@ -309,8 +313,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../CAD/resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ../CAD/mainwindow.h ../CAD/mainview.h ../CAD/controlnet.h ../CAD/mousehandler.h ../CAD/face.h ../CAD/vertex.h ../CAD/halfedge.h ../CAD/mesh.h ../CAD/objfile.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../CAD/main.cpp ../CAD/mainwindow.cpp ../CAD/mainview.cpp ../CAD/controlnet.cpp ../CAD/mousehandler.cpp ../CAD/mesh.cpp ../CAD/objfile.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../CAD/mainwindow.h ../CAD/mainview.h ../CAD/controlnet.h ../CAD/mousehandler.h ../CAD/face.h ../CAD/vertex.h ../CAD/halfedge.h ../CAD/mesh.h ../CAD/objfile.h ../CAD/ternary.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../CAD/main.cpp ../CAD/mainwindow.cpp ../CAD/mainview.cpp ../CAD/controlnet.cpp ../CAD/mousehandler.cpp ../CAD/mesh.cpp ../CAD/objfile.cpp ../CAD/ternary.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ../CAD/mainwindow.ui $(DISTDIR)/
 
 
@@ -337,7 +341,8 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../CAD/resources.qrc \
 		../CAD/shaders/fragshader.glsl \
-		../CAD/shaders/vertshader.glsl
+		../CAD/shaders/vertshader.glsl \
+		../CAD/shaders/fragshader_black.glsl
 	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name resources ../CAD/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_mainview.cpp
@@ -352,6 +357,7 @@ moc_mainview.cpp: ../CAD/controlnet.h \
 		../CAD/face.h \
 		../CAD/halfedge.h \
 		../CAD/objfile.h \
+		../CAD/ternary.h \
 		../CAD/mousehandler.h \
 		../CAD/mainview.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/moc $(DEFINES) -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++-64 -I/home/teun/Documents/Qt/CAD/CAD -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5 -I/usr/include/c++/5/backward -I/usr/lib/gcc/x86_64-linux-gnu/5/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include ../CAD/mainview.h -o moc_mainview.cpp
@@ -369,6 +375,7 @@ ui_mainwindow.h: ../CAD/mainwindow.ui \
 		../CAD/face.h \
 		../CAD/halfedge.h \
 		../CAD/objfile.h \
+		../CAD/ternary.h \
 		../CAD/mousehandler.h
 	/usr/lib/x86_64-linux-gnu/qt5/bin/uic ../CAD/mainwindow.ui -o ui_mainwindow.h
 
@@ -394,6 +401,7 @@ mainwindow.o: ../CAD/mainwindow.cpp ../CAD/mainwindow.h \
 		../CAD/face.h \
 		../CAD/halfedge.h \
 		../CAD/objfile.h \
+		../CAD/ternary.h \
 		../CAD/mousehandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../CAD/mainwindow.cpp
 
@@ -404,6 +412,7 @@ mainview.o: ../CAD/mainview.cpp ../CAD/mainview.h \
 		../CAD/face.h \
 		../CAD/halfedge.h \
 		../CAD/objfile.h \
+		../CAD/ternary.h \
 		../CAD/mousehandler.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainview.o ../CAD/mainview.cpp
 
@@ -412,7 +421,8 @@ controlnet.o: ../CAD/controlnet.cpp ../CAD/controlnet.h \
 		../CAD/vertex.h \
 		../CAD/face.h \
 		../CAD/halfedge.h \
-		../CAD/objfile.h
+		../CAD/objfile.h \
+		../CAD/ternary.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o controlnet.o ../CAD/controlnet.cpp
 
 mousehandler.o: ../CAD/mousehandler.cpp ../CAD/mousehandler.h \
@@ -421,7 +431,9 @@ mousehandler.o: ../CAD/mousehandler.cpp ../CAD/mousehandler.h \
 		../CAD/vertex.h \
 		../CAD/face.h \
 		../CAD/halfedge.h \
-		../CAD/objfile.h
+		../CAD/objfile.h \
+		../CAD/ternary.h \
+		../CAD/mainview.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mousehandler.o ../CAD/mousehandler.cpp
 
 mesh.o: ../CAD/mesh.cpp ../CAD/mesh.h \
@@ -433,6 +445,14 @@ mesh.o: ../CAD/mesh.cpp ../CAD/mesh.h \
 
 objfile.o: ../CAD/objfile.cpp ../CAD/objfile.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o objfile.o ../CAD/objfile.cpp
+
+ternary.o: ../CAD/ternary.cpp ../CAD/ternary.h \
+		../CAD/mesh.h \
+		../CAD/vertex.h \
+		../CAD/face.h \
+		../CAD/halfedge.h \
+		../CAD/objfile.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ternary.o ../CAD/ternary.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

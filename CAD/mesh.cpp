@@ -109,6 +109,12 @@ Mesh::Mesh(OBJFile* loadedOBJFile) {
 
   qDebug() << "   # Updated HalfEdges" << HalfEdges.capacity() << HalfEdges.size();
 
+  HalfEdge *currentEdge;
+  for (int i = 0; i < HalfEdges.size(); ++i){
+    currentEdge = &HalfEdges[i];
+    currentEdge->colGrad = 0.33 * (currentEdge->target->coords - currentEdge->twin->target->coords);
+  }
+
 }
 
 Mesh::~Mesh() {
