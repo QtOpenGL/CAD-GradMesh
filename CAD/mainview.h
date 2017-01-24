@@ -40,7 +40,7 @@ private:
 
   MouseHandler *mouseHandler;
   QOpenGLDebugLogger* debugLogger;
-  QOpenGLShaderProgram* mainShaderProg,* blackShaderProg;
+  QOpenGLShaderProgram* mainShaderProg,* blackShaderProg,* whiteShaderProg;
 
   GLuint netVAO, netCoordsBO, netIndexBO, netColourBO;
   GLuint terVAO, terCoordsBO, terColourBO;

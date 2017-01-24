@@ -341,6 +341,7 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../CAD/resources.qrc \
 		../CAD/shaders/fragshader.glsl \
+		../CAD/shaders/fragshader_white.glsl \
 		../CAD/shaders/vertshader.glsl \
 		../CAD/shaders/fragshader_black.glsl
 	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name resources ../CAD/resources.qrc -o qrc_resources.cpp
